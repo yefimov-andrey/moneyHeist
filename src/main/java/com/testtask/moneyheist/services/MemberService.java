@@ -1,19 +1,21 @@
 package com.testtask.moneyheist.services;
 
-import com.testtask.moneyheist.entities.Member;
+import com.testtask.moneyheist.entities.MemberEntity;
 import com.testtask.moneyheist.repositories.MemberRepository;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 
 @NoArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
-    public void createMember(){
-        Member member = new Member();
-        memberRepository.save(member);
+    public void createMember(MemberEntity memberEntity){
+        //MemberEntity memberEntity = new MemberEntity();
+        memberRepository.saveAndFlush(memberEntity);
     }
 
     public boolean memberExists(String email){

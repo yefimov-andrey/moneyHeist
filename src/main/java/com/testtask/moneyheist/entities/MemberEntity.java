@@ -1,7 +1,11 @@
 package com.testtask.moneyheist.entities;
 
 import com.testtask.moneyheist.Skill;
+import com.testtask.moneyheist.objects.Member;
+import com.testtask.moneyheist.objects.MemberStatus;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +15,10 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
-public class Member {
+public class MemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -33,18 +39,6 @@ public class Member {
     @Column(name = "status", nullable = false)
     private MemberStatus status;
 
-    public enum MemberStatus {
-        AVAILABLE,
-        EXPIRED,
-        INCARCERATED,
-        RETIRED
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "mainSkill")
+    private String mainSkill;
 }
