@@ -12,9 +12,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.ArrayList;
 
 @Entity
+@Table (name = "MEMBER_ENTITY")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,10 +36,10 @@ public class MemberEntity {
     private String email;
 
     @Column(name = "skills", nullable = false)
-    private ArrayList<Skill> skills;
+    private String skills;
 
     @Column(name = "status", nullable = false)
-    private MemberStatus status;
+    private String status;
 
     @Column(name = "mainSkill")
     private String mainSkill;

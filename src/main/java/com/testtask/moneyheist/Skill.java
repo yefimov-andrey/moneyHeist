@@ -1,7 +1,9 @@
 package com.testtask.moneyheist;
 
-public class Skill {
+import lombok.Value;
 
-    private String skillName;
-    private String skillLevel;
+@Value
+public class Skill {
+    String name;
+    String level;
 }
