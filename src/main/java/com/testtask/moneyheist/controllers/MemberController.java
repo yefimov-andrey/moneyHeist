@@ -3,11 +3,13 @@ package com.testtask.moneyheist.controllers;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.testtask.moneyheist.Skill;
 import com.testtask.moneyheist.objects.Member;
+import com.testtask.moneyheist.objects.MemberSkills;
+import com.testtask.moneyheist.objects.Skill;
 import com.testtask.moneyheist.services.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +50,19 @@ public class MemberController {
         else {
             return errorMemberResponse("Email already exists!");
         }
+    }
+
+    @RequestMapping(value = "/member/{memberId}/skills", method = RequestMethod.PUT)
+    public ResponseEntity putMemberSkills(@PathVariable Long memberId, @RequestBody MemberSkills memberSkills){
+        if(memberService.findById(memberId) != null) {
+            int result = memberService.changeMemberSkills(memberId, memberSkills);
+            if (result == 204)
+                return ResponseEntity.noContent().header("Content-Location", "/member/" + memberId + "/skills").build();
+            else
+                return ResponseEntity.badRequest().build();
+        }
+        else
+            return ResponseEntity.notFound().build();
     }
 
     ResponseEntity<String> createdMemberResponse(Long id) {

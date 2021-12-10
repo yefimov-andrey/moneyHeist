@@ -1,16 +1,14 @@
 package com.testtask.moneyheist.mappers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.testtask.moneyheist.Skill;
 import com.testtask.moneyheist.entities.MemberEntity;
 import com.testtask.moneyheist.objects.Member;
+import com.testtask.moneyheist.objects.Skill;
 import lombok.NoArgsConstructor;
-import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @NoArgsConstructor
 @Component
@@ -38,11 +36,26 @@ public class MemberMapper {
                 .build();
     }
 
-    public Skill[] skillsToArray(String skills) throws JsonProcessingException {
-        String skills2 = StringEscapeUtils.escapeJava(skills);
-        final ObjectMapper objectMapper = new ObjectMapper();
-        Skill[] skillsArray = objectMapper.readValue(skills2, Skill[].class);
-        return skillsArray;
+    public ArrayList<Skill> skillsToArrayList(String skills){
+        if(skills != null) {
+            ArrayList<Skill> skillArrayList = new ArrayList<>();
+            Pattern pattern = Pattern.compile("Skill\\(");
+            String[] skillsArray = pattern.split(skills);
+            String skillName = "";
+            String skillLevel = "";
+            int k = 0;
+            for (String skill : skillsArray) {
+                if (k != 0) {
+                    skillName = skill.split("name=")[1].split(",")[0];
+                    skillLevel = skill.split("level=")[1].split("\\)")[0];
+                    skillArrayList.add(k - 1, new Skill(skillName, skillLevel));
+                }
+                k++;
+            }
+            return skillArrayList;
+        }
+        else
+            return null;
     }
 
 

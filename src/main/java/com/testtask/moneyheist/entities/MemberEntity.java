@@ -1,8 +1,5 @@
 package com.testtask.moneyheist.entities;
 
-import com.testtask.moneyheist.Skill;
-import com.testtask.moneyheist.objects.Member;
-import com.testtask.moneyheist.objects.MemberStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.ArrayList;
 
 @Entity
 @Table (name = "MEMBER_ENTITY")
