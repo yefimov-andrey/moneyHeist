@@ -3,6 +3,8 @@ package com.testtask.moneyheist.controllers;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.testtask.moneyheist.entities.MemberEntity;
+import com.testtask.moneyheist.mappers.MemberMapper;
 import com.testtask.moneyheist.objects.Member;
 import com.testtask.moneyheist.objects.MemberSkills;
 import com.testtask.moneyheist.objects.Skill;
@@ -25,6 +27,7 @@ import java.util.Set;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberMapper memberMapper;
 
     @RequestMapping(value = "/member", method = RequestMethod.POST)
     public ResponseEntity createMember(@RequestBody Member member) {
@@ -60,6 +63,23 @@ public class MemberController {
                 return ResponseEntity.noContent().header("Content-Location", "/member/" + memberId + "/skills").build();
             else
                 return ResponseEntity.badRequest().build();
+        }
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(value = "/member/{memberId}/skills/{skillName}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteMemberSkill(@PathVariable Long memberId, @PathVariable String skillName){
+        MemberEntity memberEntity;
+        if((memberEntity = memberService.findById(memberId)) != null){
+            Skill skill;
+            ArrayList<Skill> skillArrayList = memberMapper.skillsToArrayList(memberEntity.getSkills());
+            if((skill = memberService.findBySkillName(skillArrayList, skillName)) != null){
+                memberService.deleteMemberSkill(memberEntity, skill);
+                return ResponseEntity.noContent().build();
+            }
+            else
+                return ResponseEntity.notFound().build();
         }
         else
             return ResponseEntity.notFound().build();

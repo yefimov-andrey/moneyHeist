@@ -45,7 +45,7 @@ public class MemberService {
         return memberRepository.findById(id).orElse(null);
     }
 
-    private Skill findBySkillName(ArrayList<Skill> skillArrayList, String skillName){
+    public Skill findBySkillName(ArrayList<Skill> skillArrayList, String skillName){
         return skillArrayList.stream().filter(skill -> skillName.equals(skill.getName())).findFirst().orElse(null);
     }
 
@@ -90,6 +90,14 @@ public class MemberService {
             memberEntity.setMainSkill("");
         memberRepository.saveAndFlush(memberEntity);
         return 200;
+    }
+
+    public MemberEntity deleteMemberSkill(MemberEntity memberEntity, Skill skill){
+        ArrayList<Skill> skillArrayList = memberMapper.skillsToArrayList(memberEntity.getSkills());
+        skillArrayList.remove(skill);
+        memberEntity.setSkills(skillArrayList.toString());
+        memberRepository.saveAndFlush(memberEntity);
+        return memberEntity;
     }
 
 }
