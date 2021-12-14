@@ -59,7 +59,7 @@ public class MemberService {
         }
         MemberEntity memberEntity = memberRepository.findById(id).orElse(null);
         String mainSkill = memberSkills.getMainSkill();
-        ArrayList<Skill> oldSkillsArrayList = memberMapper.skillsToArrayList(memberEntity.getSkills());
+        ArrayList<Skill> oldSkillsArrayList = memberMapper.memberSkillsToArrayList(memberEntity.getSkills());
         Skill tempSkill = new Skill("a", "*");
         int size = oldSkillsArrayList.size();
         boolean isInOldList;
@@ -93,7 +93,7 @@ public class MemberService {
     }
 
     public MemberEntity deleteMemberSkill(MemberEntity memberEntity, Skill skill){
-        ArrayList<Skill> skillArrayList = memberMapper.skillsToArrayList(memberEntity.getSkills());
+        ArrayList<Skill> skillArrayList = memberMapper.memberSkillsToArrayList(memberEntity.getSkills());
         skillArrayList.remove(skill);
         memberEntity.setSkills(skillArrayList.toString());
         memberRepository.saveAndFlush(memberEntity);

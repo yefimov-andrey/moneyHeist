@@ -36,7 +36,7 @@ public class MemberMapper {
                 .build();
     }
 
-    public ArrayList<Skill> skillsToArrayList(String skills){
+    public ArrayList<Skill> memberSkillsToArrayList(String skills){
         if(skills != null) {
             ArrayList<Skill> skillArrayList = new ArrayList<>();
             Pattern pattern = Pattern.compile("Skill\\(");

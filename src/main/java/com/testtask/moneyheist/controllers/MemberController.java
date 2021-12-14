@@ -1,8 +1,5 @@
 package com.testtask.moneyheist.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.testtask.moneyheist.entities.MemberEntity;
 import com.testtask.moneyheist.mappers.MemberMapper;
 import com.testtask.moneyheist.objects.Member;
@@ -31,8 +28,8 @@ public class MemberController {
 
     @RequestMapping(value = "/member", method = RequestMethod.POST)
     public ResponseEntity createMember(@RequestBody Member member) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        /*ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);*/
         if(!memberService.existsByEmail(member.getEmail())) {
             Long id = memberService.createMember(member);
             ArrayList<Skill> skills1 = member.getSkills();
@@ -73,7 +70,7 @@ public class MemberController {
         MemberEntity memberEntity;
         if((memberEntity = memberService.findById(memberId)) != null){
             Skill skill;
-            ArrayList<Skill> skillArrayList = memberMapper.skillsToArrayList(memberEntity.getSkills());
+            ArrayList<Skill> skillArrayList = memberMapper.memberSkillsToArrayList(memberEntity.getSkills());
             if((skill = memberService.findBySkillName(skillArrayList, skillName)) != null){
                 memberService.deleteMemberSkill(memberEntity, skill);
                 return ResponseEntity.noContent().build();
