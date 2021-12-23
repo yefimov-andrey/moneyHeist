@@ -1,20 +1,20 @@
 package com.testtask.moneyheist.objects;
 
-import com.testtask.moneyheist.Skill;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @Builder
 @With
 @Value
 public class Member {
     String name;
-    String sex;
+    Sex sex;
     String email;
-    ArrayList<Skill> skills;
-    String mainSkill;
-    String status;
+    Set<Skill> skills;
+    Skill mainSkill;
+    MemberStatus status;
 }

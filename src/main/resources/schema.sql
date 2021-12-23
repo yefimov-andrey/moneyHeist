@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS MEMBER (
   sex VARCHAR(1) NOT NULL,
   email VARCHAR(250) NOT NULL,
   skills VARCHAR(500) NOT NULL,
-  mainSkill VARCHAR(50),
+  main_skill VARCHAR(50),
   status VARCHAR(20) NOT NULL,
   UNIQUE KEY member_email_UNIQUE (email)
 );

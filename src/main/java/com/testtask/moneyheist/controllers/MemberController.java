@@ -1,64 +1,24 @@
 package com.testtask.moneyheist.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.testtask.moneyheist.Skill;
 import com.testtask.moneyheist.objects.Member;
 import com.testtask.moneyheist.services.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-@RestController
+@RestController(value = "/member")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @RequestMapping(value = "/member", method = RequestMethod.POST)
+    @PostMapping(value = "/")
     public ResponseEntity createMember(@RequestBody Member member) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        if(!memberService.existsByEmail(member.getEmail())) {
-            Long id = memberService.createMember(member);
-            ArrayList<Skill> skills1 = member.getSkills();
-            Set<String> skillNames = new HashSet<>();
-            String skillName = "";
-            for (Skill skill:skills1) {
-                skillName = skill.getName();
-                if(!skillNames.contains(skillName)){
-                    skillNames.add(skillName);
-                }
-                else {
-                    return errorMemberResponse("Same skill is mentioned more than once");
-                }
-            }
-            return createdMemberResponse(id);
-
-        }
-        else {
-            return errorMemberResponse("Email already exists!");
-        }
+        return memberService.createMemberNew(member);
     }
 
-    ResponseEntity<String> createdMemberResponse(Long id) {
-        return ResponseEntity.created(URI.create("/member/" + id))
-                .body("");
-    }
 
-    ResponseEntity<String> errorMemberResponse(String error){
-        return ResponseEntity.badRequest()
-                .header("Error", error)
-                .body("");
-    }
 
 }

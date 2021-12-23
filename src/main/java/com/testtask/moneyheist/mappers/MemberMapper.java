@@ -2,14 +2,13 @@ package com.testtask.moneyheist.mappers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.testtask.moneyheist.Skill;
+import com.testtask.moneyheist.objects.Skill;
 import com.testtask.moneyheist.entities.MemberEntity;
 import com.testtask.moneyheist.objects.Member;
 import lombok.NoArgsConstructor;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class MemberMapper {
         memberEntity.setName(member.getName());
         memberEntity.setEmail(member.getEmail());
         memberEntity.setSex(member.getSex());
-        memberEntity.setSkills(member.getSkills().toString());
+        memberEntity.setSkills(member.getSkills());
         memberEntity.setMainSkill(member.getMainSkill());
         memberEntity.setStatus(member.getStatus());
         return memberEntity;
