@@ -5,6 +5,7 @@ import com.testtask.moneyheist.entities.MemberEntity;
 import com.testtask.moneyheist.mappers.MemberMapper;
 import com.testtask.moneyheist.objects.Member;
 import com.testtask.moneyheist.repositories.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,10 @@ import java.util.regex.Pattern;
 @Transactional
 public class MemberService {
 
+    @Autowired
     private MemberMapper memberMapper;
 
-
+    @Autowired
     private MemberRepository memberRepository;
 
 
@@ -35,15 +37,28 @@ public class MemberService {
                 boolean repeatSkills = false;
                 for (int i = 0; i < skills.size(); i++) {
                     for (int k = i + 1; k < skills.size(); k++) {
-                        if (skills.get(i) == skills.get(k))
+                        if (skills.get(i).getName().equals(skills.get(k).getName()))
                             repeatSkills = true;
                     }
                 }
                 if (!repeatSkills) {
-                    MemberEntity memberEntity = memberRepository.save(memberMapper.memberToMemberEntity(member));
-                    return ResponseEntity.created(URI.create("/member/" + memberEntity.getId())).body("");
+                    boolean mainSkillIsPresent = false;
+                    for (int i = 0; i < skills.size(); i++){
+                        if(skills.get(i).getName().equals(member.getMainSkill()))
+                            mainSkillIsPresent = true;
+                            break;
+                    }
+                    if(mainSkillIsPresent){
+                        MemberEntity memberEntity = memberRepository.save(memberMapper.memberToMemberEntity(member));
+                        return ResponseEntity.created(URI.create("/member/" + memberEntity.getId())).body("");
+                    }
+                    else{
+                        return ResponseEntity.badRequest().header("Error", "Main skill is not mentioned in the skill set!")
+                                .body("");
+
+                    }
                 } else {
-                    return ResponseEntity.badRequest().header("Error", "Same skill is mentioned more than once")
+                    return ResponseEntity.badRequest().header("Error", "Same skill is mentioned more than once!")
                             .body("");
                 }
 
