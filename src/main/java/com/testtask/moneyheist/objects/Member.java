@@ -15,6 +15,6 @@ public class Member {
     Sex sex;
     String email;
     Set<Skill> skills;
-    Skill mainSkill;
+    String mainSkill;
     MemberStatus status;
 }

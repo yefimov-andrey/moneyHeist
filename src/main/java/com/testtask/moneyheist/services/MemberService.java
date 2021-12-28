@@ -58,12 +58,11 @@ public class MemberService {
     }
 
     public boolean existsByEmail(String email){
-        Page<MemberEntity> entityPage = memberRepository.findAll(PageRequest.of(0,1000));
-        List<MemberEntity> entities = memberRepository.findAll();
+        /*List<MemberEntity> entities = memberRepository.findAll();
         List<String> emails = new ArrayList<>();
         for (MemberEntity entity:entities) {
             emails.add(entity.getEmail());
-        }
+        }*/
         return !memberRepository.findByEmail(email).get().equals(Collections.emptyList());
     }
 
